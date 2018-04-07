@@ -1,0 +1,93 @@
+<!doctype html> 
+<html lang="en" class="no-js"> 
+<head> 
+  <meta charset="utf-8" /> 
+  <title>注册</title> 
+   <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="../../static/css/style.css" />
+  <link rel="stylesheet" href="../../static/css/index.css">
+  <script type='text/javascript' src='../../static/js/public/jquery-1.11.1.min.js'></script>
+  <script type='text/javascript' src='../../static/js/public/jquery.particleground.min.js'></script>
+  <script type='text/javascript' src='../../static/js/demo.js'></script>
+  <script type="text/javascript" src="../../static/js/vue/vue.js"></script>
+  <script type="text/javascript" src="../../static/js/vue/index.js"></script>
+  <style>
+	  .el-row {  
+	    margin-bottom: 5px;  
+	    &:last-child {  
+	      margin-bottom: 0;  
+	    }  
+	  }  
+	  #visitor{
+	  	background: none;
+	  	color: #FFFF00;
+	  }
+  </style>
+</head> 
+
+<body>
+
+<div id="particles">
+	<div class="intro" style="top: 260px;">
+		<h2>用户注册</h2>
+		<div id="app" class="login-box" style="margin-top: 15px;">
+		  	<el-row>
+			  	<el-col :span="18" :offset="3">
+			  		<div class="demo-input-suffix">
+				  		<el-input placeholder="请输入您的邮箱" v-model="username" clearable>
+						    <template slot="prepend">账号</template>
+						</el-input>
+			  		</div>
+			  	</el-col>
+			</el-row>
+			<el-row>
+			  	<el-col :span="18" :offset="3">
+			  		<div class="demo-input-suffix">
+				  		<el-input placeholder="请输入您的密码" v-model="password" clearable>
+						    <template slot="prepend">密码</template>
+						</el-input>
+			  		</div>
+			  	</el-col>
+			</el-row>
+			<el-row>
+			  	<el-col :span="18" :offset="3">
+			  		<div class="demo-input-suffix">
+				  		<el-input placeholder="请确认密码" v-model="password" clearable>
+						    <template slot="prepend">确认密码</template>
+						</el-input>
+			  		</div>
+			  	</el-col>
+			</el-row>
+			<el-row>  
+			    <el-col :span="8" :offset="3">  
+			        <el-button id="login"  style="width:100%;margin-top: 5px;" type="primary">登录</el-button>
+			    </el-col>  
+			     <el-col :span="8" :offset="2">  
+			        <el-button id="register"  style="width:100%;margin-top: 5px;" type="warning">注册</el-button>
+			    </el-col>  
+			</el-row>  
+		</div>	
+		
+	</div>
+</div>
+
+</body> 
+<script>
+	var cc = new Vue({
+			el: '#app',
+			data: {
+				username:"",
+				password:"",
+				input5: 5,
+				select: '',
+			},
+			methods:{
+				getNumber: function (b) {
+		          document.location = 'http://www.'+b+'.com'  // 不管是内联方法调用，还是绑定事件处理器两种方式执行事件响应方法的时候 this都是指向 app
+		        }
+			}
+	})
+</script>
+</html> 
