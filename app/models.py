@@ -1,4 +1,4 @@
-from app import mongo
+# from app import mongo
 from time import time
 
 

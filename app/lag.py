@@ -111,10 +111,10 @@ def get_position(url, page_num, keywords):
 
 
 # 爬取起始页
-city = "厦门"
+city = "深圳"
 url = 'https://www.lagou.com/jobs/positionAjax.json?city={0}&needAddtionalResult=false'.format(quote(city))
 # 设置查询的关键词
-keywords = ["Python", "Java", "C", "C++", "PHP", "Android", "iOS", "web前端"]
+keywords = ['新媒体', '平面设计', '会计']  # ["Python", "Java", "C", "C++", "PHP", "Android", "iOS", "web前端"]
 pn = 0
 for key in keywords:
     page_num = 1
