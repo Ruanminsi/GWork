@@ -1,4 +1,6 @@
-# from app import mongo
+import datetime
+
+from app import db
 from time import time
 
 
@@ -16,3 +18,14 @@ class User(object):
 			'status': 0,
 			'last_login_at': None,
 		}
+
+
+class Users(db.Document):
+	name = db.StringField(max_length=128, required=True)
+	password = db.StringField(max_length=128, required=True)
+	nickname = db.StringField(default="", max_length=128)
+	question = db.StringField(default="", max_length=128)
+	answer = db.StringField(default="", max_length=128)
+	role = db.IntField(default=0)
+	register = db.DateTimeField(default=datetime.datetime.now)
+	login = db.DateTimeField()
