@@ -50,4 +50,4 @@ class Position(db.Document):
     secondType = db.StringField(max_length=256)
     positionAdvantage = db.StringField(max_length=256)
     city = db.StringField(max_length=256)
-    district = db.StringField(max_length=256)
+    createdTime = db.StringField(max_length=256)

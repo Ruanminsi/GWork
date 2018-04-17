@@ -31,7 +31,7 @@ def hello_world():
                  education="3y", positionLables="ssss",
                  jobNature="314", firstType="1444",
                  secondType="gg", positionAdvantage="1d",
-                 city="31", district="dasd")
+                 city="31", createdTime="2018-5-6")
     p.save()
     return render_template('user/login.html')
 
