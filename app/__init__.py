@@ -17,13 +17,23 @@ db = MongoEngine(app)
 
 @app.route('/')
 def hello_world():
-	# names = mongo.db.users.find().limit(5)
-	# print(names)
-	from app.models import Users
-	user = Users(name="test-0", password="000")
-	user.save()
-
-	return render_template('user/login.html')
+    # names = mongo.db.users.find().limit(5)
+    # print(names)
+    from app.models import Users
+    user = Users(name="test-0", password="000")
+    user.save()
+    from app.models import Position
+    p = Position(companyFullName="1", companyShortName="11",
+                 companyLabelList="a", companySize="2",
+                 financeStage="a1", industryField="a2",
+                 industryLables="t,t", positionName="23",
+                 salary="5-6", workYear="2122",
+                 education="3y", positionLables="ssss",
+                 jobNature="314", firstType="1444",
+                 secondType="gg", positionAdvantage="1d",
+                 city="31", district="dasd")
+    p.save()
+    return render_template('user/login.html')
 
 
 from app import models, views
