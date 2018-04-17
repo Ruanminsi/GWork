@@ -22,17 +22,7 @@ def hello_world():
     from app.models import Users
     user = Users(name="test-0", password="000")
     user.save()
-    from app.models import Position
-    p = Position(companyFullName="1", companyShortName="11",
-                 companyLabelList="a", companySize="2",
-                 financeStage="a1", industryField="a2",
-                 industryLables="t,t", positionName="23",
-                 salary="5-6", workYear="2122",
-                 education="3y", positionLables="ssss",
-                 jobNature="314", firstType="1444",
-                 secondType="gg", positionAdvantage="1d",
-                 city="31", createdTime="2018-5-6")
-    p.save()
+
     return render_template('user/login.html')
 
 
