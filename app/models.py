@@ -29,7 +29,7 @@ class Users(db.Document):
     role = db.IntField(default=0)
     register = db.DateTimeField(default=datetime.datetime.now)
     last_login = db.DateTimeField()
-    login = db.DateTimeField()
+    login_status = db.IntField(default=0)
 
 
 class Position(db.Document):
