@@ -36,7 +36,7 @@
 		  	<el-row>
 			  	<el-col :span="18" :offset="3">
 			  		<div class="demo-input-suffix">
-				  		<el-input placeholder="请输入内容" v-model="username" clearable>
+				  		<el-input id="username" placeholder="请输入内容" v-model="username" clearable>
 						    <template slot="prepend">账号</template>
 						</el-input>
 			  		</div>
@@ -45,7 +45,7 @@
 			<el-row>
 			  	<el-col :span="18" :offset="3">
 			  		<div class="demo-input-suffix">
-				  		<el-input placeholder="请输入内容" v-model="password" clearable>
+				  		<el-input id="password" placeholder="请输入内容" v-model="password" clearable>
 						    <template slot="prepend">密码</template>
 						</el-input>
 			  		</div>
@@ -53,10 +53,10 @@
 			</el-row>
 			<el-row>  
 			    <el-col :span="8" :offset="3">  
-			        <el-button id="login"  style="width:100%;margin-top: 5px;" type="primary">登录</el-button>
+			        <el-button id="login" v-on:click="check" style="width:100%;margin-top: 5px;" type="primary">登录</el-button>
 			    </el-col>  
 			     <el-col :span="8" :offset="2">  
-			        <el-button id="register"  style="width:100%;margin-top: 5px;" type="warning">注册</el-button>
+			        <el-button id="register" v-on:click="gotoRegister" style="width:100%;margin-top: 5px;" type="warning">注册</el-button>
 			    </el-col>  
 			</el-row>  
 			<el-row>  
@@ -72,19 +72,61 @@
 
 </body> 
 <script>
-	var cc = new Vue({
-			el: '#app',
-			data: {
-				username:"",
-				password:"",
-				input5: 5,
-				select: '',
-			},
-			methods:{
-				getNumber: function (b) {
-		          document.location = 'http://www.'+b+'.com'  // 不管是内联方法调用，还是绑定事件处理器两种方式执行事件响应方法的时候 this都是指向 app
-		        }
-			}
-	})
+  new Vue({
+    el : '#app',
+    data : {
+        username : '',
+        password : ''
+    },
+    methods : {
+        check : function(event){
+            //获取值
+            var username = this.username;
+            var password = this.password;
+            if(username == '' || password == ''){
+                this.$message({
+                    message : '账号或密码为空！',
+                    type : 'error'
+                })
+                return;
+            }
+            $.ajax({
+                url : '../login',
+                type : 'post',
+                data : {
+                    username : username,
+                    password : password
+                },
+                success : function(data) {
+                    var result = data.result;
+                    var URL = data.url;
+                    if(result == true && URL){
+                         window.location.href = URL
+                    }else{
+                        alert("用户名或密码错误");
+                    }
+                },
+                dataType : 'json',
+            })
+        },
+        gotoRegister:function () {
+             window.location.href = "{{ url_for('userregister') }}"
+        },
+    }
+})
+{#	var cc = new Vue({#}
+{#			el: '#app',#}
+{#			data: {#}
+{#				username:"",#}
+{#				password:"",#}
+{#				input5: 5,#}
+{#				select: '',#}
+{#			},#}
+{#			methods:{#}
+{#				getNumber: function (b) {#}
+{#		          document.location = 'http://www.'+b+'.com'  // 不管是内联方法调用，还是绑定事件处理器两种方式执行事件响应方法的时候 this都是指向 app#}
+{#		        }#}
+{#			}#}
+{#	})#}
 </script>
 </html> 

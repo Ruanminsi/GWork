@@ -4,21 +4,6 @@ from app import db
 from time import time
 
 
-class User(object):
-    @classmethod
-    def create_user(cls, username, password):
-        return {
-            'username': username,
-            'password': password,
-            'nickname': None,
-            'register_at': time(),
-            'question': None,
-            'answer': None,
-            'record': None,
-            'status': 0,
-            'last_login_at': None,
-        }
-
 
 class Users(db.Document):
     name = db.StringField(max_length=128, required=True)
@@ -32,7 +17,7 @@ class Users(db.Document):
     login_status = db.IntField(default=0)
 
 
-class Position(db.Document):
+class Positiones(db.Document):
     companyFullName = db.StringField(max_length=256)
     companyLabelList = db.ListField(db.StringField(max_length=512))
     companySize = db.StringField(max_length=256)
@@ -46,3 +31,9 @@ class Position(db.Document):
     secondType = db.StringField(max_length=256)
     positionAdvantage = db.StringField(max_length=256)
     city = db.StringField(max_length=256)
+
+
+class Reports(db.Document):
+    pname = db.StringField(max_length=256)
+    pcontent = db.StringField(max_length=256)
+    flag = db.IntField(default=0)
