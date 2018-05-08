@@ -26,11 +26,15 @@ def userregister():
     ''' 跳转注册页面 '''
     return render_template('user/register.html')
 
-@app.route('/registerx')
-def userregisterx():
+@app.route('/login')
+def userLogin():
     ''' 跳转注册页面 '''
-    return render_template('admin/register.html')
+    return render_template('user/login.html')
 
+@app.route('/searchall')
+def userSearch():
+    ''' 跳转注册页面 '''
+    return render_template('user/searchall.html')
 from app import models, views
 
 
@@ -40,28 +44,56 @@ def login():
     if request.method == "POST":
         username = request.form.get('username', None)
         password = request.form.get('password', None)
-
-    obj = Users.objects(name=username, password=password).first()
+    bytesString = password.encode(encoding="utf-8")
+    encodestr = base64.b64encode(bytesString).decode()  # 加密
+    obj = Users.objects(name=username, password=encodestr).first()
     if obj is None:
         return jsonify({'result': False, 'reason': 'no exist',
                  'url': None})
     else:
         session['userid'] = obj.name
-        return jsonify({'result': True, 'url': 'user/index'})
+        return jsonify({'result': True, 'url': 'searchall'})
         # Users(username=username, password=encodepassword).save()
 
-# @app.route('/register', methods=['POST'])
-# def register():
-#     ''' 注册 '''
-#     if request.method == 'POST':
-#         p_username = request.form.get('username', None)
-#         p_password = request.form.get('password', None)
-#
-#
-#     if result is True:
-#         from app.core.calculate.logtimeset import uregister
-#         uregister(p_username, p_password)
-#         return jsonify({'result': True, 'url': 'login'})
-#     else:
-#         return jsonify({'result': False, 'reason': '名称被占领了',
-#                         'url': None})
+
+@app.route('/register', methods=['POST'])
+def register():
+    ''' 注册 '''
+    from app.models import Users
+    if request.method == 'POST':
+        username = request.form.get('username', None)
+        password = request.form.get('password', None)
+        nickname = request.form.get('nickname', None)
+
+    obj = Users.objects(name=username).first()
+    if obj is None:
+        bytesString = password.encode(encoding="utf-8")
+        encodestr = base64.b64encode(bytesString).decode()  #加密
+        decodestr = base64.b64decode(encodestr).decode()    #解密
+        Users(name=username, password=encodestr, nickname=nickname).save()
+        return jsonify({'result': True, 'url': 'login'})
+    else:
+        return jsonify({'result': False, 'reason': '该邮箱已注册',
+                        'url': None})
+
+
+@app.route('/searchall', methods=['POST'])
+def search():
+	if request.method == 'POST':
+		key = request.form.get('key', None)
+		select = request.form.get('select', None)
+	if select == '找分析':
+		return jsonify({'result': True, 'url': 'login'})
+	else:
+		return jsonify({'result': True, 'url': 'register'})
+
+
+@app.route('/report', methods=['POST'])
+def report():
+	pass
+
+
+@app.route('/report', methods=['POST'])
+def report():
+	pass
+

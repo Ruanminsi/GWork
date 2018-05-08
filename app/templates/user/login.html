@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="stylesheet" href="../../static/css/style.css" />
-  <link rel="stylesheet" href="../../static/css/index.css">
+  <link rel="stylesheet" href="../../static/css/vue/index.css">
   <script type='text/javascript' src='../../static/js/public/jquery-1.11.1.min.js'></script>
   <script type='text/javascript' src='../../static/js/public/jquery.particleground.min.js'></script>
   <script type='text/javascript' src='../../static/js/demo.js'></script>
@@ -45,7 +45,7 @@
 			<el-row>
 			  	<el-col :span="18" :offset="3">
 			  		<div class="demo-input-suffix">
-				  		<el-input id="password" placeholder="请输入内容" v-model="password" clearable>
+				  		<el-input id="password" placeholder="请输入内容" type="password" v-model="password" clearable>
 						    <template slot="prepend">密码</template>
 						</el-input>
 			  		</div>
