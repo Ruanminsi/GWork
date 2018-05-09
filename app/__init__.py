@@ -11,6 +11,12 @@ app.config['BABEL_DEFAULT_LOCALE'] = 'zh_CN'
 db = MongoEngine(app)
 babel = Babel(app)
 
+
+@babel.localeselector
+def get_locale():
+	return session.get('lang', 'zh_Hans_CN')
+
+
 @app.route('/')
 def hello_world():
     # names = mongo.db.users.find().limit(5)
@@ -36,6 +42,19 @@ def userSearch():
     ''' 跳转注册页面 '''
     return render_template('user/searchall.html')
 from app import models, views
+
+
+@app.route('/send', methods=["POST"])
+def send():
+    from app.models import Users
+    if request.method == "POST":
+        title = request.form.get('title', None)
+        select = request.form.get('select', None)
+        content = request.form.get('content', None)
+    print(type(content))
+    i = str(title)+str(select)+content
+    print(i)
+    return jsonify({'result': i, 'reason': 'no exist'})
 
 
 @app.route('/login', methods=["POST"])
@@ -92,8 +111,4 @@ def search():
 def report():
 	pass
 
-
-@app.route('/report', methods=['POST'])
-def report():
-	pass
 

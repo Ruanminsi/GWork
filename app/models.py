@@ -3,8 +3,6 @@ import datetime
 from app import db
 from time import time
 
-
-
 class Users(db.Document):
     name = db.StringField(max_length=128, required=True)
     password = db.StringField(max_length=128, required=True)
@@ -13,7 +11,7 @@ class Users(db.Document):
     answer = db.StringField(default="", max_length=128)
     role = db.IntField(default=0)
     register = db.DateTimeField(default=datetime.datetime.now)
-    last_login = db.DateTimeField()
+    last_login = db.DateTimeField(default=datetime.datetime.now)
     login_status = db.IntField(default=0)
 
 
