@@ -14,7 +14,7 @@ babel = Babel(app)
 
 @babel.localeselector
 def get_locale():
-	return session.get('lang', 'zh_Hans_CN')
+    return session.get('lang', 'zh_Hans_CN')
 
 
 @app.route('/')
@@ -27,33 +27,51 @@ def hello_world():
 
     return render_template('user/login.html')
 
+
 @app.route('/register')
 def userregister():
     ''' 跳转注册页面 '''
     return render_template('user/register.html')
+
 
 @app.route('/login')
 def userLogin():
     ''' 跳转注册页面 '''
     return render_template('user/login.html')
 
+
 @app.route('/searchall')
 def userSearch():
     ''' 跳转注册页面 '''
     return render_template('user/searchall.html')
+
+
 from app import models, views
+
+
+@app.route('/report')
+def userReport():
+    ''' 跳转报告页面 '''
+    return render_template('user/report.html')
 
 
 @app.route('/send', methods=["POST"])
 def send():
     from app.models import Users
+    from app.mail import mail
     if request.method == "POST":
         title = request.form.get('title', None)
         select = request.form.get('select', None)
         content = request.form.get('content', None)
     print(type(content))
-    i = str(title)+str(select)+content
-    print(i)
+    i = str(title) + str(select) + content
+    if select == 0:
+        select = "系统通知"
+    else:
+        select = "活动公告"
+    users = Users.objects.all()
+    for user in users:
+        mail(title, select, content, user.name)
     return jsonify({'result': i, 'reason': 'no exist'})
 
 
@@ -68,11 +86,10 @@ def login():
     obj = Users.objects(name=username, password=encodestr).first()
     if obj is None:
         return jsonify({'result': False, 'reason': 'no exist',
-                 'url': None})
+                        'url': None})
     else:
         session['userid'] = obj.name
         return jsonify({'result': True, 'url': 'searchall'})
-        # Users(username=username, password=encodepassword).save()
 
 
 @app.route('/register', methods=['POST'])
@@ -87,8 +104,8 @@ def register():
     obj = Users.objects(name=username).first()
     if obj is None:
         bytesString = password.encode(encoding="utf-8")
-        encodestr = base64.b64encode(bytesString).decode()  #加密
-        decodestr = base64.b64decode(encodestr).decode()    #解密
+        encodestr = base64.b64encode(bytesString).decode()  # 加密
+        decodestr = base64.b64decode(encodestr).decode()  # 解密
         Users(name=username, password=encodestr, nickname=nickname).save()
         return jsonify({'result': True, 'url': 'login'})
     else:
@@ -98,17 +115,20 @@ def register():
 
 @app.route('/searchall', methods=['POST'])
 def search():
-	if request.method == 'POST':
-		key = request.form.get('key', None)
-		select = request.form.get('select', None)
-	if select == '找分析':
-		return jsonify({'result': True, 'url': 'login'})
-	else:
-		return jsonify({'result': True, 'url': 'register'})
+    if request.method == 'POST':
+        keyword = request.form.get('key', None)
+        selects = request.form.get('select', None)
+    if selects == '找分析':
+        from app.test import returnReport
+        obj = returnReport(keyword)
+        session["obj"] = obj
+        return jsonify({'result': True, 'url': 'report'})
+    else:
+        return jsonify({'result': True, 'url': 'positions'})
 
 
-@app.route('/report', methods=['POST'])
+@app.route('/reportInfo', methods=['GET'])
 def report():
-	pass
-
-
+    obj = session["obj"]
+    print(obj)
+    return jsonify({'result': True, 'detail': obj})
