@@ -12,15 +12,16 @@ class UserView(ModelView):
         name='用户名',
         password='密码',
         nickname='昵称',
-        question='密保',
+        question='密保问题',
         answer='密保答案',
         role='角色',
         login_status='登录状态',
+        last_login='登录时间'
     )
     column_filters = ['name']
     column_searchable_list = ('name', 'password')
     column_exclude_list = (
-        'register', 'last_login',
+        'register',
     )
 
 
@@ -67,6 +68,6 @@ class ReportView(ModelView):
     column_filters = ['pname', 'pcontent', 'flag']
 
 
-@admin.route('/login')
+@admin.route('/login/')
 def index():
     return render_template('admin/login.html')

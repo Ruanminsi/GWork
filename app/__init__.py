@@ -17,6 +17,11 @@ def get_locale():
     return session.get('lang', 'zh_Hans_CN')
 
 
+@app.route('/admin/login')
+def index():
+    return render_template('admin/login.html')
+
+
 @app.route('/')
 def hello_world():
     # names = mongo.db.users.find().limit(5)
@@ -89,6 +94,8 @@ def login():
                         'url': None})
     else:
         session['userid'] = obj.name
+        import datetime
+        Users.objects(name=obj.name).update(set__last_login=datetime.datetime.now(),login_status=1)
         return jsonify({'result': True, 'url': 'searchall'})
 
 

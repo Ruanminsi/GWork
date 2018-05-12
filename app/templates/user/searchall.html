@@ -105,23 +105,31 @@
 	                return;
 	                }
 	                 $.ajax({
-	                url : '../searchall',
-	                type : 'post',
-	                data : {
-	                    key : key,
-	                    select : select,
-	                },
-	                success : function(data) {
-	                    var result = data.result;
-	                    var URL = data.url;
-	                    if(result == true && URL){
-	                         window.location.href = URL
-	                    }else{
-	                        alert(data.reason);
-	                    }
-	                },
-	                dataType : 'json',
-	            })
+		                url : '../searchall',
+		                type : 'post',
+		                data : {
+		                    key : key,
+		                    select : select,
+		                },
+		                success : function(data) {
+		                    var result = data.result;
+		                    var URL = data.url;
+		                    if(result == true && URL){
+		                         window.location.href = URL
+		                    }else{
+		                        alert(data.reason);
+		                    }
+		                },
+		                dataType : 'json',
+		            })
+				     const loading = this.$loading({
+			          lock: true,
+			          text: '正在努力分析中',
+			          spinner: 'el-icon-loading',
+			          background: 'rgba(0, 0, 0, 0.7)'
+			        });
+			        setTimeout("loading.close()", 500)
+
               }
 			}
 				

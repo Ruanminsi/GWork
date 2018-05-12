@@ -85,11 +85,15 @@
 									<p style="font-size: 15px;">&nbsp;&nbsp;&nbsp;&nbsp;${content1}</p>
 								</div>
 
+					<p>职位取样分布</p>
+					<div id="map" style="width: 330px;height: 300px;"></div>
+
 					<p>${title}近年来各城市平均工资：</p>
 					<div id="contents" style="width: 330px;height: 300px;"></div>
 {#									<div class="sa" >#}
 {#										<p style="font-size: 15px;">近年来中国互联网普及情况近年来中国互联网普及情况近年来中国互联网普及情况近年来中国互联网普及情况</p>#}
 {#									</div>#}
+					<p>${title}近年来各城市平均工资：</p>
 				</div>
 			</div>
 		</div>
@@ -100,7 +104,7 @@
 			el: '#app',
 			data: {
 			    centerDialogVisible: true,
-				title:"Python",
+				title:"",
 				content0:"根据来自（CNNIC）中国互联网信息中心发布的第41期《中国互联网发展状况统计报告》显示，至2017年12月为止，我国网民规模已达7.72亿，互联网普及率达55.8%，相较于全球平均水平还要高出4.1个百分点，对比亚洲平均水平超出9.1个百分点，截止至今，我国的网民规模数量还在继续保持稳定的增长。",
 				content1:"互联网行业中的岗位按照各自的职能需求划分为五个维度：市场、行政、运营、产品、技术，相互间协调运作构成互联网行业的岗位基础。",
 				xia:[],
@@ -108,6 +112,7 @@
 				shang:[],
 				guang:[],
 				shen:[],
+				pN:[],
 			},
 			methods:{
 			    getObjData:function () {
@@ -121,7 +126,9 @@
 			                cc.shang = detail.s
 			                cc.guang = detail.g
 			                cc.shen = detail.s1
-			                console.log(detail.x)
+				            cc.title = detail.title
+				            cc.pN = detail.pN
+			                console.log(detail.title)
 		                },
 		                dataType : 'json',
 		            })
@@ -133,7 +140,7 @@
 		            var g = this.guang;
 		            var s1 = this.shen;
 		            var x = this.xia;
-
+					var pN = this.pN;
 			        var myChart = echarts.init(document.getElementById('contentx'));
 			        option = {
 					    tooltip: {
@@ -216,6 +223,48 @@
 					};
 			        myChart1.setOption(option1);
 
+				    var myChart3 = echarts.init(document.getElementById('map'));
+				    var option3 = {
+					    color: ['#d6d8a5'],
+					    tooltip : {
+					        trigger: 'axis',
+					        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+					            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+					        }
+					    },
+					    grid: {
+					        left: '3%',
+					        right: '4%',
+					        bottom: '3%',
+					        containLabel: true
+					    },
+					    xAxis : [
+					        {
+					            type : 'category',
+					            data : ['厦门', '北京', '上海', '广州', '深圳'],
+					            axisTick: {
+					                alignWithLabel: true
+					            }
+					        }
+					    ],
+					    yAxis : [
+					        {
+					            type : 'value'
+					        }
+					    ],
+					    series : [
+					        {
+					            name:'岗位样本数',
+					            type:'bar',
+					            barWidth: '60%',
+					            data:pN
+					        }
+					    ]
+					};
+
+				    myChart3.setOption(option3);
+
+
 			        var myChart2 = echarts.init(document.getElementById('contents'));
 			        var option2 = {
 					    tooltip: {
@@ -227,7 +276,7 @@
 					    xAxis: [
 					        {
 					            type: 'category',
-					            data: ['应届生','1-3年','3-5年','>10年'],
+					            data: ['不限','1-3年','3-5年','5-10年'],
 					            axisPointer: {
 					                type: 'shadow'
 					            },
