@@ -39,14 +39,8 @@ def count(city, position):
 
 
 def count1(city):
-	positions = Positiones.objects(city=city)
+	positions = Positiones.objects(city=city).first()
 	return len(positions)
-#
-# print(count1('厦门'))
-# print(count1('北京'))
-# print(count1('上海'))
-# print(count1('广州'))
-# print(count1('深圳'))
 
 
 def randomNum():
@@ -110,4 +104,22 @@ def loginSituation():
 		if dt4 in t:
 			numlist[0] += 1
 	return numlist
-loginSituation()
+
+
+def getPositions(position):
+	positions = Positiones.objects(positionName__icontains=position).limit(500)
+	objs = []
+	for item in positions:
+		obj = {}
+		obj["pId"] = str(item.id)
+		obj["name"] = item.companyFullName
+		obj["pName"] = item.positionName
+		obj["salary"] = item.salary
+		objs.append(obj)
+	print(objs)
+	return objs
+
+
+def getDetailrPosition(name, pName):
+	positions = Positiones.objects(companyFullName=name, positionName__icontains=pName).first()
+	print(positions)

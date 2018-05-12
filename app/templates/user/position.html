@@ -5,11 +5,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 	    <meta name="apple-mobile-web-app-capable" content="yes">
 	    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<title></title>
+		<title>岗位搜索</title>
 		<!-- 引入样式 -->
 		 <link rel="stylesheet" href="../../static/css/style.css" />
-	  <link rel="stylesheet" href="../../static/css/index.css">
+	    <link rel="stylesheet" href="../../static/css/index.css">
 		<!-- 引入组件库 -->
+		<script type='text/javascript' src='../../static/js/public/jquery-1.11.1.min.js'></script>
+	    <script type='text/javascript' src='../../static/js/public/jquery.particleground.min.js'></script>
 		<script src="../../static/js/vue/vue.js"></script>
          <script type="text/javascript" src="../../static/js/vue/index.js"></script>
 		<style>
@@ -73,7 +75,7 @@
 		</style>
 	</head>
 	<body>
-	<div>
+
 
 	<div class="intro" style="top: 40px;">
 		<div id="app">
@@ -104,14 +106,14 @@
 			</el-row>
 			<el-row>
 				<el-col :span="24">
-				  	<el-input placeholder="请输入内容" v-model="input5">
+				  	<el-input placeholder="请输入内容" v-model="position">
 						<el-select v-model="city" slot="prepend" placeholder="城市">
-							<el-option label="不限" value="0"></el-option>
-							<el-option label="厦门" value="1"></el-option>
-							<el-option label="北京" value="2"></el-option>
-							<el-option label="上海" value="3"></el-option>
-							<el-option label="广州" value="4"></el-option>
-							<el-option label="深圳" value="5"></el-option>
+							<el-option label="不限" value="不限"></el-option>
+							<el-option label="厦门" value="厦门"></el-option>
+							<el-option label="北京" value="北京"></el-option>
+							<el-option label="上海" value="上海"></el-option>
+							<el-option label="广州" value="广州"></el-option>
+							<el-option label="深圳" value="深圳"></el-option>
 						</el-select>
 						<el-button slot="append" icon="el-icon-search" @click.native="getNumber('')"></el-button>
 					</el-input>
@@ -123,20 +125,20 @@
 			    <el-card style="padding: 0px;">
 			      <div style="padding: 2px;">
 			      	<div style="text-align: center;">
-			      		<span>{{item.name}}</span>
+			      		<span>${item.name}</span>
 			      	</div>
 			        <div style="text-align: left;margin-top: 15px;">
 			      		<span style="font-weight: bold;">岗位:&nbsp;&nbsp;</span>
-			   			<span>{{item.va}}</span>
+			   			<span>${item.pName}</span>
 			      	</div>
 			        <div style="text-align: left;margin-top: 15px;">
 			      		<span style="font-weight: bold;">薪资:&nbsp;&nbsp;</span>
-			   			<span>{{item.s}}</span>
+			   			<span>${item.salary}</span>
 			      	</div>
 			        <div class="bottom clearfix" style="text-align: left;margin-top: 15px;">
 			          <span style="font-weight: bold;">编号:&nbsp;&nbsp;</span>
-			          <time class="time">121212</time>
-			          <el-button type="text" class="button">查看详情</el-button>
+			          <time class="time">${item.pId}</time>
+			          <el-button type="text" class="button" v-on:click="detail(item.pId)">查看详情</el-button>
 			        </div>
 			      </div>
 			    </el-card>
@@ -151,68 +153,69 @@
 </body>
 <script>
 
-	new Vue({
+	var tmp =  new Vue({
+			delimiters: ['${', '}'],
 			el: '#app',
 			data: {
 				city:'',
-				input5: '',
 				position: '',
 				exp:'',
 				situation:'',
-				ps:[{name:"ss"},{name:"ss"},{name:"ss"},{name:"ss"}],
 				Exps: [{
-			          value: '0',
+			          value: '不限',
 			          label: '不限'
 			        }, {
-			          value: '1',
+			          value: '1-3年',
 			          label: '1-3年'
 			        }, {
-			          value: '2',
+			          value: '3-5年',
 			          label: '3-5年'
 			        }, {
-			          value: '3',
+			          value: '5-10年',
 			          label: '5-10年'
 			        }],
 			    Situations: [{
-			          value: '0',
+			          value: '不限',
 			          label: '不限'
 			        }, {
-			          value: '1',
+			          value: '未融资',
 			          label: '未融资'
 			        }, {
-			          value: '2',
+			          value: '天使轮',
 			          label: '天使轮'
 			        }, {
-			          value: '3',
+			          value: 'A轮',
 			          label: 'A轮'
 			        }, {
-			          value: '4',
+			          value: 'B轮',
 			          label: 'B轮'
 			        }, {
-			          value: '5',
+			          value: '上市公司',
 			          label: '上市公司'
 			        }],
-				names:[{name:"浙江诚泽金开投资管理有限公司",va:"Java高级开发工程师",s:"8-5k"},
-						{name:"ADSMITH INTERNATIONAL (HK) LIMITED",va:"文案编辑（新媒体运营）",s:"3-5k"},
-						{name:"Hewlett Packard Enterprise Company (HPE)",va:"高级Java开发工程师",s:"6-5k"},
-										{name:"ADSMITH INTERNATIONAL (HK) LIMITED",va:"文案编辑（新媒体运营）",s:"3-5k"},
-						{name:"Hewlett Packard Enterprise Company (HPE)",va:"高级Java开发工程师",s:"6-5k"},
-										{name:"ADSMITH INTERNATIONAL (HK) LIMITED",va:"文案编辑（新媒体运营）",s:"3-5k"},
-						{name:"Hewlett Packard Enterprise Company (HPE)",va:"高级Java开发工程师",s:"6-5k"},
-										{name:"ADSMITH INTERNATIONAL (HK) LIMITED",va:"文案编辑（新媒体运营）",s:"3-5k"},
-						{name:"Hewlett Packard Enterprise Company (HPE)",va:"高级Java开发工程师",s:"6-5k"},
-										{name:"ADSMITH INTERNATIONAL (HK) LIMITED",va:"文案编辑（新媒体运营）",s:"3-5k"},
-						{name:"Hewlett Packard Enterprise Company (HPE)",va:"高级Java开发工程师",s:"6-5k"},
-										{name:"ADSMITH INTERNATIONAL (HK) LIMITED",va:"文案编辑（新媒体运营）",s:"3-5k"},
-						{name:"Hewlett Packard Enterprise Company (HPE)",va:"高级Java开发工程师",s:"6-5k"},
-										{name:"ADSMITH INTERNATIONAL (HK) LIMITED",va:"文案编辑（新媒体运营）",s:"3-5k"},
-						{name:"Hewlett Packard Enterprise Company (HPE)",va:"高级Java开发工程师",s:"6-5k"},
-						{name:"鼎昊健远（北京）影视科技有限责任公司",va:"2018应届生-Java开发工程师",s:"6-15k"}
-						]
+				names:[],
 				},
-
 				methods:{
-				}
+			        getObjData:function () {
+				        $.ajax({
+				                url : '../positionList',
+				                type : 'get',
+				                success : function(data) {
+			                    var detail = data.detail
+					                console.log(detail)
+			                    tmp.names = detail.pList
+				                console.log(detail)
+			                },
+			                dataType : 'json',
+			            })
+                    },
+		            detail: function (arg) {
+			            alert(arg)
+                    }
+				},
+				mounted:function () {
+						this.getObjData()
+                }
 
 		})
 	</script>

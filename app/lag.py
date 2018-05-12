@@ -5,12 +5,9 @@ import urllib.parse
 import json
 from time import time, sleep
 from pymongo import MongoClient
-
 conn = MongoClient('localhost', 27017)
 db = conn.todos
 my_set = db.positions
-
-
 class Position(object):
 	@classmethod
 	def create_position(cls, *args):
@@ -41,8 +38,6 @@ class Position(object):
 			'created_at': time()
 		}
 
-
-# 设置headers
 page_headers = {
 	'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.221 Safari/537.36 SE 2.X MetaSr 1.0',
 	'Connection': 'keep-alive',
@@ -56,8 +51,6 @@ page_headers = {
 	'X-Requested-With': 'XMLHttpRequest'
 }
 
-
-# 获取招聘职位信息
 def get_position(url, page_num, keywords):
 	try:
 		# 设置post请求参数
