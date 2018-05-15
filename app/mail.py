@@ -14,7 +14,7 @@ def mail(title, select, content, email):
 	try:
 		msg = MIMEText(content, 'plain', 'utf-8')
 		msg['From'] = formataddr(["求索管理员", my_sender])
-		msg['To'] = formataddr(["就是你这个哔哔蛋", email])  # 括号里的对应收件人邮箱昵称、收件人邮箱账号
+		msg['To'] = formataddr(["", email])  # 括号里的对应收件人邮箱昵称、收件人邮箱账号
 		msg['Subject'] = title+"-" + select  # 邮件的主题
 
 		server = smtplib.SMTP_SSL("smtp.qq.com", 465)  # 发件人邮箱中的SMTP服务器，端口是465
@@ -25,8 +25,3 @@ def mail(title, select, content, email):
 		ret = False
 	return ret
 
-# ret=mail()
-# if ret:
-#     print("邮件发送成功")
-# else:
-#     print("邮件发送失败")

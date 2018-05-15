@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="../../static/css/style.css" />
+  <link rel="stylesheet" href="../../static/css/vue/index.css">
+  <script type='text/javascript' src='../../static/js/public/jquery-1.11.1.min.js'></script>
+  <script type='text/javascript' src='../../static/js/public/jquery.particleground.min.js'></script>
+  <script type='text/javascript' src='../../static/js/demo.js'></script>
+  <script type="text/javascript" src="../../static/js/vue/vue.js"></script>
+  <script type="text/javascript" src="../../static/js/vue/index.js"></script>
+  <style>
+	  .el-row {
+	    margin-bottom: 5px;
+	    &:last-child {
+	      margin-bottom: 0;
+	    }
+	  }
+	  #visitor{
+	  	background: none;
+	  	color: #FFFF00;
+	  }
+  </style>
+</head>
+
+<body>
+
+<div id="particles">
+	<div class="intro" style="top: 220px;">
+
+		<div id="app" class="login-box" style="margin-top: 15px;">
+				<el-button style="margin-top: -125px;margin-left: 300px" type="danger" plain v-on:click="gotoSearch">返回</el-button>
+				<h2>个人中心</h2>
+
+			<el-dialog title="提示信息" :visible.sync="dialogFormVisible" width="92%" center>
+				<span>${ detail }</span>
+				  <span slot="footer" class="dialog-footer">
+					    <el-button type="primary" @click="dialogFormVisible=false">确 定</el-button>
+					  </span>
+			  </el-dialog>
+
+		  	<el-row>
+			  	<el-col :span="18" :offset="3">
+			  		<div class="demo-input-suffix">
+				  		<el-input id="username"  v-model="username" :disabled="true">
+						    <template slot="prepend">账号</template>
+						</el-input>
+			  		</div>
+			  	</el-col>
+			</el-row>
+			<el-row>
+			  	<el-col :span="18" :offset="3">
+			  		<div class="demo-input-suffix">
+				  		<el-input id="nickname" type="text" v-model="nickname" clearable>
+						    <template slot="prepend">昵称</template>
+						</el-input>
+			  		</div>
+			  	</el-col>
+			</el-row>
+			<el-row>
+			  	<el-col :span="18" :offset="3">
+			  		<div class="demo-input-suffix">
+				  		<el-input id="question"  placeholder="尚未设置" type="text" v-model="question" clearable>
+						    <template slot="prepend">密保</template>
+						</el-input>
+			  		</div>
+			  	</el-col>
+			</el-row>
+			<el-row>
+			  	<el-col :span="18" :offset="3">
+			  		<div class="demo-input-suffix">
+				  		<el-input id="answer" placeholder="尚未设置" type="text" v-model="answer" clearable>
+						    <template slot="prepend">答案</template>
+						</el-input>
+			  		</div>
+			  	</el-col>
+			</el-row>
+			<el-row>
+			    <el-col :span="18" :offset="3">
+			        <el-button id="login" v-on:click="check" style="width:100%;margin-top: 5px;" type="primary">确认</el-button>
+			    </el-col>
+
+			</el-row>
+		</div>
+
+	</div>
+</div>
+
+</body>
+<script>
+  var tp = new Vue({
+	  delimiters: ['${', '}'],
+    el : '#app',
+    data : {
+        dialogFormVisible:false,
+        username : '',
+        nickname : '',
+	    question:'',
+	    answer:'',
+	    detail:'',
+    },
+    methods : {
+        getObjData: function () {
+	        $.ajax({
+                url : '../getPerson',
+                type : 'get',
+                success : function(data) {
+                    var result = data.result;
+                    var detail = data.detail;
+                    if(result == true){
+                        tp.username = detail.name
+	                    tp.nickname = detail.nickname
+	                    tp.question = detail.question
+	                    tp.answer = detail.answer
+                    }
+                },
+                dataType : 'json',
+            })
+        },
+        check : function(event){
+            //获取值
+            var nickname = this.nickname;
+            var question = this.question;
+	        var answer = this.answer;
+            $.ajax({
+                url : '../setPerson',
+                type : 'post',
+                data : {
+                    nickname : nickname,
+                    question : question,
+	                answer : answer
+                },
+                success : function(data) {
+                    var result = data.result;
+                    var detail = data.detail;
+                    if(result == true){
+                       tp.detail = detail
+                    }
+                },
+                dataType : 'json',
+            })
+	          tp.dialogFormVisible=true
+        },
+        gotoSearch:function () {
+             window.location.href = "{{ url_for('userSearch') }}"
+        },
+
+    },
+    mounted:function () {
+		this.getObjData()
+    }
+})
+
+</script>
+</html>

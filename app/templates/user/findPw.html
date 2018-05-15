@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" href="../../static/css/style.css" />
+  <link rel="stylesheet" href="../../static/css/vue/index.css">
+  <script type='text/javascript' src='../../static/js/public/jquery-1.11.1.min.js'></script>
+  <script type='text/javascript' src='../../static/js/public/jquery.particleground.min.js'></script>
+  <script type='text/javascript' src='../../static/js/demo.js'></script>
+  <script type="text/javascript" src="../../static/js/vue/vue.js"></script>
+  <script type="text/javascript" src="../../static/js/vue/index.js"></script>
+  <style>
+	  .el-row {
+	    margin-bottom: 5px;
+	    &:last-child {
+	      margin-bottom: 0;
+	    }
+	  }
+	  #visitor{
+	  	background: none;
+	  	color: #FFFF00;
+	  }
+  </style>
+</head>
+
+<body>
+
+<div id="particles">
+	<div class="intro" style="top: 260px;">
+		<h2>重置密码</h2>
+		<div id="app" class="login-box" style="margin-top: 15px;">
+				<el-dialog title="提示" :visible.sync="dialogVisible" width="90%" center>
+				  <span style="text-align: center">${ detail }</span>
+				  <span slot="footer" class="dialog-footer">
+				    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+				  </span>
+				</el-dialog>
+				<el-dialog title="提示" :visible.sync="dialogVisible1" width="90%" center>
+					  <span style="text-align: center">${ detail1 }</span>
+					  <span slot="footer" class="dialog-footer">
+					    <el-button type="primary" @click="dialogVisible1 = false">确 定</el-button>
+					  </span>
+				</el-dialog>
+
+
+		  	<el-row>
+			  	<el-col :span="18" :offset="3">
+			  		<div class="demo-input-suffix">
+				  		<el-input id="username" placeholder="请输入内容" v-model="username" clearable>
+						    <template slot="prepend">账号</template>
+						</el-input>
+			  		</div>
+			  	</el-col>
+			</el-row>
+				<el-row>
+			  	<el-col :span="18" :offset="3">
+			  		<div class="demo-input-suffix">
+				  		<el-input placeholder="请输入新密码" v-model="newPass"  type="password" clearable>
+						    <template slot="prepend">密码</template>
+						</el-input>
+			  		</div>
+			  	</el-col>
+			</el-row>
+			<el-row>
+			  	<el-col :span="18" :offset="3">
+			  		<div class="demo-input-suffix">
+				  		<el-input placeholder="请再次输入新密码" v-model="newPass1"  type="password" clearable>
+						    <template slot="prepend">确认密码</template>
+						</el-input>
+			  		</div>
+			  	</el-col>
+			</el-row>
+
+
+			<el-row>
+			  	<el-col :span="18" :offset="3">
+			  		<div>
+					  <el-input placeholder="请输入验证码" v-model="code">
+					    <el-button slot="append" v-on:click="getCode">获取验证码</el-button>
+					  </el-input>
+					</div>
+			  	</el-col>
+			</el-row>
+			<el-row>
+			    <el-col :span="18" :offset="3">
+			        <el-button id="login" v-on:click="check" style="width:100%;margin-top: 5px;" type="primary">确认</el-button>
+			    </el-col>
+			</el-row>
+		</div>
+		<p style="font-size: 12px;">验证码十五分钟内有效</p>
+
+	</div>
+</div>
+
+</body>
+<script>
+var tp =  new Vue({
+	delimiters: ['${', '}'],
+    el : '#app',
+    data : {
+        dialogVisible: false,
+	    dialogVisible1: false,
+	    detail:'',
+	    detail1:'',
+        username : '',
+        code : '',
+	    newPass:'',
+	    newPass1:''
+    },
+    methods : {
+        getCode:function () {
+	        var username = this.username;
+            if(username == ''){
+                this.$message({
+                    message : '账号不可为空！',
+                    type : 'error'
+                })
+                return;
+            }
+	        $.ajax({
+                url : '../getCode',
+                type : 'post',
+                data : {
+                    username : username,
+                },
+                success : function(data) {
+                     var result = data.result;
+                      var detail = data.detail;
+                      if(result == true){
+                          tp.dialogVisible = true
+	                      tp.detail = detail
+                      }else {
+	                      tp.dialogVisible = true
+	                      tp.detail = detail
+                      }
+                },
+                dataType : 'json',
+            })
+        },
+        check : function(event){
+            //获取值
+            var username = this.username;
+            var code = this.code;
+            var newPass = this.newPass;
+            var newPass1 = this.newPass1;
+            if(username == '' || newPass == ''){
+                this.$message({
+                    message : '账号或密码为空！',
+                    type : 'error'
+                })
+                return;
+            }
+	        if(newPass != newPass1){
+                this.$message({
+                    message : '两次密码不一致！',
+                    type : 'error'
+                })
+                return;
+            }
+             if(newPass.length<6 || newPass.length>18){
+	                this.$message({
+	                    message : '请设置密码长度为6-18位',
+	                    type : 'error'
+	                })
+	                return;
+	            }
+            $.ajax({
+                url : '../resetPw',
+                type : 'post',
+                data : {
+                    username : username,
+                    code : code,
+	                newPass : newPass
+                },
+                success : function(data) {
+                    var result = data.result;
+                    var detail = data.detail
+                    var URL = data.url;
+                    if(result == true){
+                         window.location.href = URL
+                    }else{
+                        tp.dialogVisible1 = true
+	                    tp.detail1 = detail
+                    }
+                },
+                dataType : 'json',
+            })
+        },
+        gotoRegister:function () {
+             window.location.href = "{{ url_for('userLogin') }}"
+        },
+    }
+})
+
+</script>
+</html>

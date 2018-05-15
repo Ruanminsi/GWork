@@ -57,11 +57,16 @@
 			    </el-col>  
 			     <el-col :span="8" :offset="2">  
 			        <el-button id="register" v-on:click="gotoRegister" style="width:100%;margin-top: 5px;" type="warning">注册</el-button>
-			    </el-col>  
-			</el-row>  
+			    </el-col>
+			</el-row>
+			<el-row>
+			    <el-col :span="8" :offset="8">
+			   		<el-button  style="width:100%;margin-top: 10px;"  v-on:click="gotofind" type="info">重置密码</el-button>
+			    </el-col>
+			</el-row>
 			<el-row>  
 			    <el-col :span="8" :offset="8">  
-			   		<el-button id="visitor" style="width:100%;margin-top: 10px;" type="success" round>游客登录</el-button>
+			   		<el-button id="visitor" style="width:100%;margin-top: 10px;" v-on:click="gotoV" type="success" round>游客登录</el-button>
 			    </el-col>  
 			</el-row> 
 		</div>	
@@ -112,21 +117,14 @@
         gotoRegister:function () {
              window.location.href = "{{ url_for('userregister') }}"
         },
+	    gotofind:function () {
+		     window.location.href = "{{ url_for('findPw') }}"
+        },
+	    gotoV :function () {
+		    window.location.href = "{{ url_for('uservSearch') }}"
+        }
     }
 })
-{#	var cc = new Vue({#}
-{#			el: '#app',#}
-{#			data: {#}
-{#				username:"",#}
-{#				password:"",#}
-{#				input5: 5,#}
-{#				select: '',#}
-{#			},#}
-{#			methods:{#}
-{#				getNumber: function (b) {#}
-{#		          document.location = 'http://www.'+b+'.com'  // 不管是内联方法调用，还是绑定事件处理器两种方式执行事件响应方法的时候 this都是指向 app#}
-{#		        }#}
-{#			}#}
-{#	})#}
+
 </script>
 </html> 

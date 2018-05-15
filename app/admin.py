@@ -68,6 +68,9 @@ class ReportView(ModelView):
     column_filters = ['pname', 'pcontent', 'flag']
 
 
+@admin.route('/login')
 @admin.route('/login/')
 def index():
     return render_template('admin/login.html')
+
+

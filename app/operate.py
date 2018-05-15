@@ -7,6 +7,7 @@ from app.models import Positiones, Users
 alist = []
 
 
+
 def countAverage(city, position, exp):
 	'''
 	计算平均工资
@@ -38,9 +39,9 @@ def count(city, position):
 	return len(positions)
 
 
-def count1(city):
-	positions = Positiones.objects(city=city).first()
-	return len(positions)
+def count1(position):
+	positions = Positiones.objects(positionName__icontains=position).first()
+	return positions
 
 
 def randomNum():
@@ -58,6 +59,8 @@ def returnReport(key):
 	citys = ['厦门', '北京', '上海', '广州', '深圳']
 	numList = []
 	averageList = []
+	if count1(key) is None:
+		return None
 	for city in citys:
 		numList.append(count(city, key))
 		for exp in exps:
@@ -107,7 +110,9 @@ def loginSituation():
 
 
 def getPositions(position):
-	positions = Positiones.objects(positionName__icontains=position).limit(500)
+	if count1(position) is None:
+		return None
+	positions = Positiones.objects(positionName__icontains=position).limit(300)
 	objs = []
 	for item in positions:
 		obj = {}
@@ -116,10 +121,39 @@ def getPositions(position):
 		obj["pName"] = item.positionName
 		obj["salary"] = item.salary
 		objs.append(obj)
-	print(objs)
 	return objs
 
 
 def getDetailrPosition(name, pName):
-	positions = Positiones.objects(companyFullName=name, positionName__icontains=pName).first()
-	print(positions)
+	position = Positiones.objects(companyFullName=name, positionName__icontains=pName).first()
+	obj = {}
+	obj["name"] = position.companyFullName
+	obj["size"] = position.companySize
+	obj["finance"] = position.financeStage
+	obj["pName"] = position.positionName
+	obj["salary"] = position.salary
+	obj["exp"] = position.workYear
+	obj["education"] = position.education
+	obj["advance"] = position.positionAdvantage
+	obj["city"] = position.city
+	return obj
+
+
+def findPW(content, email):
+	user = Users.objects(name=email).first()
+	if user is not None:
+		from app.mail import mail
+		title = "密码验证码"
+		select = "重置密码"
+		content = "验证码:   "+str(content)
+		mail(title, select, content, user.name)
+		return True
+	else:
+		return False
+
+
+def setPw(name, pw):
+	Users.objects(name=name).update(set__password=pw)
+
+def setPI(name, nick, que, ans):
+	Users.objects(name=name).update(set__nickname=nick, set__question=que, set__answer=ans)

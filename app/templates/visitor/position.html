@@ -79,35 +79,9 @@
 
 	<div class="intro" style="top: 40px;">
 		<div id="app">
-			<p>条件筛选</p>
-{#			<el-row :gutter="24">#}
-{#				<template>#}
-{#				  <el-select v-model="exp" placeholder="工作经验">#}
-{#				    <el-option  v-for="item in Exps" :key="item.value" :label="item.label" :value="item.value">#}
-{#				    </el-option>#}
-{#				  </el-select>#}
-{##}
-{#				  <el-select   v-model="situation" placeholder="融资情况">#}
-{#				    <el-option  v-for="item in Situations"  :key="item.value"  :label="item.label"  :value="item.value">#}
-{#				    </el-option>#}
-{#				  </el-select>#}
-{#				</template>#}
-{#			</el-row>#}
-			<el-row>
-				<el-col :span="24">
-				  	<el-input placeholder="请输入内容" v-model="position">
-						<el-select v-model="city" slot="prepend" placeholder="城市">
-							<el-option label="不限" value="不限"></el-option>
-							<el-option label="厦门" value="厦门"></el-option>
-							<el-option label="北京" value="北京"></el-option>
-							<el-option label="上海" value="上海"></el-option>
-							<el-option label="广州" value="广州"></el-option>
-							<el-option label="深圳" value="深圳"></el-option>
-						</el-select>
-						<el-button slot="append" icon="el-icon-search"  @click.native="search"></el-button>
-					</el-input>
-				</el-col>
-			</el-row>
+			<h2>职位列表</h2>
+			<el-button style="margin-top: -145px;margin-left: 300px" type="danger" plain v-on:click="vreturn">返回</el-button>
+
 
 			<el-dialog title="详细信息" :visible.sync="dialogFormVisible" width="92%" center>
 				<div>
@@ -189,6 +163,8 @@
 				},
 				city:'',
 				position: '',
+{#				exp:'',#}
+{#				situation:'',#}
 				Exps: [{
 			          value: '不限',
 			          label: '不限'
@@ -255,7 +231,7 @@
 				                tmp.form.size = detail.size
 				                tmp.form.advance = detail.advance
 				                tmp.form.city = detail.city
-
+				                console.log(detail)
 			                },
 			                dataType : 'json',
 			            })
@@ -286,6 +262,9 @@
 				                dataType : 'json',
 				            })
                     },
+				vreturn:function () {
+				 window.location.href = "{{ url_for('uservSearch') }}"
+                }
 				},
 				mounted:function () {
 						this.getObjData()

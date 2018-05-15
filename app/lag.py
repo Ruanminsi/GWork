@@ -6,6 +6,8 @@ import json
 from time import time, sleep
 from pymongo import MongoClient
 conn = MongoClient('localhost', 27017)
+city = ["厦门","北京","上海","广州","深圳"]
+url = 'https://www.lagou.com/jobs/positionAjax.json?city={0}&needAddtionalResult=false'.format(quote(city))
 db = conn.todos
 my_set = db.positions
 class Position(object):
@@ -116,22 +118,21 @@ def get_position(url, page_num, keywords):
 		print(str(e))
 
 
-# 爬取起始页
-city = "深圳"
-url = 'https://www.lagou.com/jobs/positionAjax.json?city={0}&needAddtionalResult=false'.format(quote(city))
-# 设置查询的关键词
-keywords = ["Python",'新媒体', '平面设计', '会计', "Java", "C", "C++", "PHP", "Android", "iOS", "web前端"]
-pn = 0
-for key in keywords:
-	page_num = 1
-	sleep(1)
-	while True:
-		print("正在爬取第" + str(page_num) + "页......")
-		result_len = get_position(url, page_num, key)
-		if (result_len > 0):
-			pn = pn + result_len
-			page_num += 1
-		else:
-			print("{0}爬取完成".format(key))
-			break
-print(pn)
+def starts():
+	# 设置查询的关键词
+	keywords = ["Python",'新媒体', '平面设计', '会计', "Java", "C", "C++", "PHP", "Android", "iOS", "web前端"]
+	pn = 0
+	for key in keywords:
+		page_num = 1
+		sleep(1)
+		while True:
+			print("正在爬取第" + str(page_num) + "页......")
+			result_len = get_position(url, page_num, key)
+			if (result_len > 0):
+				pn = pn + result_len
+				page_num += 1
+			else:
+				print("{0}爬取完成".format(key))
+				break
+	print(pn)
+starts()

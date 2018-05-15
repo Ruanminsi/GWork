@@ -62,16 +62,11 @@
 	<body>
 	<div id="particles">
 		
-	<div class="intro" style="top: 140px;">
-
+	<div class="intro" style="top: 160px;">
 		<div id="app">
-			<el-button style="margin-top: -200px;margin-left: 290px" type="success" plain v-on:click="gotoCenter">${nick}</el-button>
-			<div style="margin-top: 15px">
-					<el-button style="margin-top: -125px;margin-left: 300px" type="danger" plain v-on:click="logout">退出</el-button>
-			</div>
 
-
-			<h1>搜索</h1>
+			<el-button style="margin-top: -145px;margin-left: 300px" type="danger" plain v-on:click="logout">退出</el-button>
+				<h1>搜索</h1>
 			<div style="height: 25px;"></div>
 			  <el-dialog title="详细信息" :visible.sync="dialogFormVisible" width="92%" center>
 				<span>${ detail }</span>
@@ -107,22 +102,8 @@
 				detail:'',
 				key: '',
 				select: '找分析',
-				nick:'',
 			},
 			methods:{
-			    getObjData:function () {
-				     $.ajax({
-		                url : '../getPerson',
-		                type : 'get',
-		                success : function(data) {
-		                    var result = data.result;
-		                    if(result == true){
-		                         tp.nick = data.detail.nickname
-		                    }
-		                },
-		                dataType : 'json',
-		            })
-                },
 			    check : function(event) {
                     //获取值
                     var key = this.key;
@@ -143,7 +124,7 @@
 		                },
 		                success : function(data) {
 		                    var result = data.result;
-		                    var URL = data.url;
+		                    var URL = 'visitor/' + data.url;
 		                    if(result == true && URL){
 		                         window.location.href = URL
 		                    }else{
@@ -169,13 +150,7 @@
                 },
 				logout:function () {
 				 window.location.href = "{{ url_for('userLogin') }}"
-                },
-				gotoCenter:function () {
-					window.location.href = "{{ url_for('person') }}"
                 }
-			},
-			mounted:function () {
-				this.getObjData()
 			}
 				
 		})
