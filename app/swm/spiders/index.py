@@ -26,7 +26,7 @@ class IndexSpider(scrapy.Spider):
         if len(data['content']['result'])!=0:
             url = "=".join(tmp[:-1])+"="+str(pn+1)
             yield Request(url,meta={'item': item},callback=self.parse_list)
-        if 1:
+        if True:
             for i in data['content']['result']:
                 nitem = item.copy()
                 nitem['name'] = i['positionName']

@@ -6,7 +6,7 @@ import json
 from time import time, sleep
 from pymongo import MongoClient
 conn = MongoClient('localhost', 27017)
-city = ["厦门","北京","上海","广州","深圳"]
+city = "厦门"
 url = 'https://www.lagou.com/jobs/positionAjax.json?city={0}&needAddtionalResult=false'.format(quote(city))
 db = conn.todos
 my_set = db.positions
@@ -101,18 +101,18 @@ def get_position(url, page_num, keywords):
 			# print(positionResult)
 			# my_set.insert(lists)
 			for item in lists:
-				from app.models import Positiones
-				p = Positiones(companyFullName=item['companyFullName'],
-				             companyLabelList=item['companyLabelList'], companySize=item['companySize'],
-				             financeStage=item['financeStage'], industryField=item['industryField'],
-				             positionName=item['positionName'],
-				             salary=item['salary'], workYear=item['workYear'],
-				             education=item['education'],
-				             firstType=item['firstType'], secondType=item['secondType'],
-				             positionAdvantage=item['positionAdvantage'],
-				             city=item['city'])
-				p.save()
-				print("---")
+				# from app.models import Positiones
+				# p = Positiones(companyFullName=item['companyFullName'],
+				#              companyLabelList=item['companyLabelList'], companySize=item['companySize'],
+				#              financeStage=item['financeStage'], industryField=item['industryField'],
+				#              positionName=item['positionName'],
+				#              salary=item['salary'], workYear=item['workYear'],
+				#              education=item['education'],
+				#              firstType=item['firstType'], secondType=item['secondType'],
+				#              positionAdvantage=item['positionAdvantage'],
+				#              city=item['city'])
+				# p.save()
+				print(item)
 		return len(positionResult)
 	except Exception as e:
 		print(str(e))
@@ -126,7 +126,7 @@ def starts():
 		page_num = 1
 		sleep(1)
 		while True:
-			print("正在爬取第" + str(page_num) + "页......")
+			# print("正在爬取第" + str(page_num) + "页......")
 			result_len = get_position(url, page_num, key)
 			if (result_len > 0):
 				pn = pn + result_len

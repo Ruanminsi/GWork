@@ -44,19 +44,26 @@ def findPw():
 @app.route('/searchall')
 def userSearch():
 	''' 跳转搜索页面 '''
-	return render_template('user/searchall.html')
+	if 'userid' in session:
+		return render_template('user/searchall.html')
+	else:
+		return redirect(url_for('userLogin'))
 
 @app.route('/person')
 def person():
-	''' 跳转岗位搜索页面 '''
-	return render_template('user/personCenter.html')
-
+	''' 跳转个人中心页面 '''
+	if 'userid' in session:
+		return render_template('user/personCenter.html')
+	else:
+		return redirect(url_for('userLogin'))
 
 @app.route('/position')
 def position():
 	''' 跳转岗位搜索页面 '''
-	return render_template('user/position.html')
-
+	if 'userid' in session:
+		return render_template('user/position.html')
+	else:
+		return redirect(url_for('userLogin'))
 
 @app.route('/vsearchall')
 def uservSearch():
@@ -79,7 +86,10 @@ from app import models, views
 @app.route('/report')
 def userReport():
 	''' 跳转报告页面 '''
-	return render_template('user/report.html')
+	if 'userid' in session:
+		return render_template('user/report.html')
+	else:
+		return redirect(url_for('userLogin'))
 
 
 @app.route('/send', methods=["POST"])

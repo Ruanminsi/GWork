@@ -155,5 +155,6 @@ def findPW(content, email):
 def setPw(name, pw):
 	Users.objects(name=name).update(set__password=pw)
 
+
 def setPI(name, nick, que, ans):
 	Users.objects(name=name).update(set__nickname=nick, set__question=que, set__answer=ans)
